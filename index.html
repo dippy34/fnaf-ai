@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Five Nights at Freddy's</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="game-container">
+
+    <!-- ===== MENU ===== -->
+    <div id="menu-screen">
+      <h1>FIVE NIGHTS<br><span>AT FREDDY'S</span></h1>
+      <p class="subtitle">Can you survive until 6 AM?</p>
+      <div id="night-select">
+        <label>Night</label>
+        <select id="night-choice">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <button id="start-btn">NEW GAME</button>
+    </div>
+
+    <!-- ===== OFFICE VIEW ===== -->
+    <div id="office-view" class="hidden">
+      <!-- Left hallway -->
+      <div id="left-hall-area">
+        <div id="left-hall-window"></div>
+        <div id="left-door" class="door"></div>
+        <div class="door-controls left-controls">
+          <button id="left-door-btn" class="ctrl-btn door-toggle">DOOR</button>
+          <button id="left-light-btn" class="ctrl-btn light-toggle">LIGHT</button>
+        </div>
+        <div id="left-door-indicator" class="door-indicator"></div>
+      </div>
+
+      <!-- Center office -->
+      <div id="office-center">
+        <canvas id="office-canvas"></canvas>
+        <div id="office-label">OFFICE</div>
+        <button id="cam-btn">OPEN CAMERAS</button>
+        <button id="panel-btn">CONTROL PANEL</button>
+      </div>
+
+      <!-- Right hallway -->
+      <div id="right-hall-area">
+        <div id="right-hall-window"></div>
+        <div id="right-door" class="door"></div>
+        <div class="door-controls right-controls">
+          <button id="right-light-btn" class="ctrl-btn light-toggle">LIGHT</button>
+          <button id="right-door-btn" class="ctrl-btn door-toggle">DOOR</button>
+        </div>
+        <div id="right-door-indicator" class="door-indicator"></div>
+      </div>
+    </div>
+
+    <!-- ===== CAMERA VIEW ===== -->
+    <div id="camera-view" class="hidden">
+      <div id="cam-feed-area">
+        <canvas id="cam-canvas"></canvas>
+        <div id="cam-static-overlay"></div>
+        <div id="cam-label"></div>
+        <div id="cam-recording">REC</div>
+      </div>
+      <div id="cam-map-panel">
+        <div id="cam-map">
+          <button class="cam-btn-map" data-cam="1a" style="grid-area:stage">1A<br><small>Stage</small></button>
+          <button class="cam-btn-map" data-cam="1b" style="grid-area:dining">1B<br><small>Dining</small></button>
+          <button class="cam-btn-map" data-cam="1c" style="grid-area:pirate">1C<br><small>Pirate</small></button>
+          <button class="cam-btn-map" data-cam="5" style="grid-area:backstage">5<br><small>Backstage</small></button>
+          <button class="cam-btn-map" data-cam="2a" style="grid-area:whall">2A<br><small>W.Hall</small></button>
+          <button class="cam-btn-map" data-cam="4a" style="grid-area:ehall">4A<br><small>E.Hall</small></button>
+          <button class="cam-btn-map" data-cam="3" style="grid-area:supply">3<br><small>Supply</small></button>
+          <button class="cam-btn-map" data-cam="2b" style="grid-area:wcorner">2B<br><small>W.Corner</small></button>
+          <button class="cam-btn-map" data-cam="4b" style="grid-area:ecorner">4B<br><small>E.Corner</small></button>
+        </div>
+      </div>
+      <button id="cam-close-btn">CLOSE CAMERAS</button>
+    </div>
+
+    <!-- ===== CONTROL PANEL ===== -->
+    <div id="control-panel" class="hidden">
+      <div id="panel-content">
+        <div id="panel-title">SYSTEMS CONTROL PANEL</div>
+        <div id="panel-systems">
+          <div class="system-row" id="sys-power">
+            <div class="sys-name">ELECTRICITY</div>
+            <div class="sys-status ok">ONLINE</div>
+            <button class="sys-reboot-btn" data-sys="power">REBOOT</button>
+            <div class="sys-bar"><div class="sys-bar-fill"></div></div>
+          </div>
+          <div class="system-row" id="sys-vent">
+            <div class="sys-name">VENTILATION</div>
+            <div class="sys-status ok">ONLINE</div>
+            <button class="sys-reboot-btn" data-sys="vent">REBOOT</button>
+            <div class="sys-bar"><div class="sys-bar-fill"></div></div>
+          </div>
+          <div class="system-row" id="sys-audio">
+            <div class="sys-name">AUDIO DEVICES</div>
+            <div class="sys-status ok">ONLINE</div>
+            <button class="sys-reboot-btn" data-sys="audio">REBOOT</button>
+            <div class="sys-bar"><div class="sys-bar-fill"></div></div>
+          </div>
+        </div>
+        <div id="panel-warnings"></div>
+      </div>
+      <button id="panel-close-btn">CLOSE PANEL</button>
+    </div>
+
+    <!-- ===== HUD ===== -->
+    <div id="hud" class="hidden">
+      <div id="hud-topleft">
+        <div id="office-room-tag">OFFICE</div>
+      </div>
+      <div id="hud-topright">
+        <div id="time-display">12 AM</div>
+        <div id="night-label">Night 1</div>
+      </div>
+      <div id="hud-bottom">
+        <div id="power-section">
+          <span>Power: </span><span id="power-pct">100%</span>
+          <span class="hud-sep">|</span>
+          <span>Usage: </span><span id="usage-bars"></span>
+        </div>
+        <div id="system-alerts"></div>
+      </div>
+    </div>
+
+    <!-- ===== JUMPSCARE ===== -->
+    <div id="jumpscare" class="hidden">
+      <canvas id="jumpscare-canvas"></canvas>
+    </div>
+
+    <!-- ===== WIN ===== -->
+    <div id="win-screen" class="hidden">
+      <h2>6 AM</h2>
+      <div class="win-cheer">YOU SURVIVED!</div>
+      <button id="continue-btn">CONTINUE</button>
+    </div>
+
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

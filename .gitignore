@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs / temp
+*.log
+node_modules/
+.env
+.env.local
+
+# Optional local scripts (not part of game)
+setup-node-user.ps1
+start-server.bat
